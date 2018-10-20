@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { FlatList, Text, View } from 'react-native'
-import { MapView } from 'expo'
+import { FlatList, Text, View, Image } from 'react-native'
+import { Video, MapView } from 'expo'
 
 const styles = {
     base: {
@@ -13,6 +13,7 @@ const styles = {
         alignSelf: 'flex-end',
     },
 }
+
 export default ({ messages }) => {
     return (
         <FlatList
@@ -29,7 +30,7 @@ export default ({ messages }) => {
                         >
                             {item.msg}
                         </Text>
-                    ) : (
+                    ) : item.type === 'map' ? (
                         <MapView
                             style={{ width: 400, height: 200 }}
                             initialRegion={{
@@ -39,7 +40,22 @@ export default ({ messages }) => {
                                 longitudeDelta: 0.05,
                             }}
                         />
-                    )}
+                    ) : item.type === 'image' ? (
+                        <Image source={{ uri: item.data.uri }} style={{ width: 400, height: 200 }} />
+                    ) : item.type === 'video' ? (
+                        <View style={{ alignSelf: 'center' }}>
+                            <Video
+                                source={require('../assets/video/funny.mp4')}
+                                rate={1.0}
+                                volume={1.0}
+                                isMuted={false}
+                                resizeMode="cover"
+                                shouldPlay
+                                isLooping
+                                style={{ width: 300, height: 300 }}
+                            />
+                        </View>
+                    ) : null}
                 </View>
             )}
         />

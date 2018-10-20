@@ -4,6 +4,7 @@ import { WebBrowser } from 'expo'
 import uuid from 'uuid'
 import { get } from 'lodash'
 import moment from 'moment'
+import { Button } from 'react-native-elements'
 
 import { MonoText } from '../components/StyledText'
 import MessageList from '../components/MessageList'
@@ -23,6 +24,9 @@ const blacklist = ['ill', 'depressed', 'stomach ache']
 const locationPhrase = 'How can I get there?'
 const startLocation = 'Munich train station'
 const endLocation = 'Hofmannstraße 25 Munich'
+const levelUp = 'Level up'
+const funnyImageUrl = 'http://cuncun.club/wp-content/uploads/2016/02/2460.jpg'
+
 const buildMyMessage = (msg, sender = 'me', type = 'text', data = {}) => ({
     id: uuid.v1(),
     msg,
@@ -38,9 +42,10 @@ export default class HomeScreen extends React.Component {
     }
     state = {
         messages: [],
+        showLevelUp: false,
     }
     sendMessage = (v, from = 'me', type = 'text', data = {}) => {
-        const messages = [...this.state.messages, buildMyMessage(v, from, type, data)]
+        const messages = [buildMyMessage(v, from, type, data), ...this.state.messages]
         this.setState({ messages })
     }
     handleLocation = async v => {
@@ -79,6 +84,11 @@ export default class HomeScreen extends React.Component {
             })
         }
     }
+    handleLevelUp = v => {
+        if (v === levelUp) {
+            this.setState({ levelUp: true })
+        }
+    }
     onSendMessagePress = async v => {
         this.sendMessage(v, 'me')
         const answer = await fetch(`${dialogFlowUrl}&q=${encodeURIComponent(v)}&lang=en&sessionId=1`, {
@@ -89,6 +99,13 @@ export default class HomeScreen extends React.Component {
         this.sendMessage(answer.result.fulfillment.speech, 'bot')
         this.handleAlertMessage(v)
         this.handleLocation(v)
+        this.handleLevelUp(v)
+    }
+    onFunnyImagePress = v => {
+        this.sendMessage(v, 'bot', 'image', { uri: funnyImageUrl })
+    }
+    onFunnyVideoPress = v => {
+        this.sendMessage(v, 'bot', 'video')
     }
     render() {
         return (
@@ -96,7 +113,17 @@ export default class HomeScreen extends React.Component {
                 <View style={styles.msgContainer}>
                     <MessageList messages={this.state.messages} />
                 </View>
-                <SendMessage onPress={this.onSendMessagePress} />
+                <View>
+                    {this.state.levelUp && (
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around', height: 80 }}>
+                            <Button onPress={this.onFunnyImagePress} title="Funny Picture" />
+                            <Button onPress={this.onFunnyVideoPress} title="Funny Video" />
+                        </View>
+                    )}
+                </View>
+                <View>
+                    <SendMessage onPress={this.onSendMessagePress} />
+                </View>
             </View>
         )
     }
@@ -108,6 +135,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     msgContainer: {
+        flex: 1,
         paddingTop: 44,
         paddingHorizontal: 16,
         paddingBottom: 16,
