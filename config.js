@@ -1,5 +1,8 @@
+export const appCodeName = 'DiNa'
 export const phoneNumber = '+4915124143143'
 export const dialogFlowUrl = 'https://api.dialogflow.com/v1/query?v=20150910'
 export const dialogFlowApiKey = '25d20263da6147059d313bb029b65af7'
 export const tyntecApiKey = 'e5e84d98e4a64a509e2e5844004bd65b'
 export const tyntecSmsUrl = 'https://api.tyntec.com/messaging/sms/v1/'
+export const googleApiUrl = 'https://maps.googleapis.com/maps/api/directions/json?'
+export const googleApiKey = 'AIzaSyA273vRppGLFkNwEHXT-aOGiLug5VkIAWM'

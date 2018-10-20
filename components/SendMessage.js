@@ -61,7 +61,6 @@ class SendMessage extends React.PureComponent {
                     returnKeyLabel="send"
                     enablesReturnKeyAutomatically
                     blurOnSubmit={false}
-                    multiline
                 />
                 <TouchableOpacity onPress={() => this.onSubmit(this.state.val)} style={styles.icon}>
                     <Icon.Ionicons
