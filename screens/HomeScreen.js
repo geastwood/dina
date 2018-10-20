@@ -7,10 +7,13 @@ import { MonoText } from '../components/StyledText'
 import MessageList from '../components/MessageList'
 import SendMessage from '../components/SendMessage'
 
-const buildMyMessage = msg => ({
+const dialogFlowUrl = 'https://api.dialogflow.com/v1/query?v=20150910'
+const dialogFlowApiKey = '25d20263da6147059d313bb029b65af7'
+
+const buildMyMessage = (msg, sender = 'me') => ({
     id: uuid.v1(),
     msg,
-    sender: 'me',
+    sender,
     timestamp: Date.now(),
 })
 
@@ -21,13 +24,23 @@ export default class HomeScreen extends React.Component {
     state = {
         messages: [],
     }
-    onSendMessagePress = v => {
+    onSendMessagePress = async v => {
         const messages = [...this.state.messages, buildMyMessage(v)]
         this.setState({ messages })
+        const answer = await fetch(`${dialogFlowUrl}&q=${encodeURIComponent(v)}&lang=en&sessionId=1`, {
+            headers: {
+                Authorization: `Bearer ${dialogFlowApiKey}`,
+            },
+        })
+            .then(data => data.json())
+            .then(data =>
+                this.setState({
+                    messages: [...this.state.messages, buildMyMessage(data.result.fulfillment.speech, 'bot')],
+                }),
+            )
     }
 
     render() {
-        const onPress = val => alert(val)
         return (
             <View style={styles.container}>
                 <View style={styles.msgContainer}>
