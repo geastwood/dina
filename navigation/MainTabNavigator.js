@@ -11,13 +11,11 @@ const HomeStack = createStackNavigator({
 })
 
 HomeStack.navigationOptions = {
-    tabBarLabel: 'Home',
+    tabBarLabel: 'Chat',
     tabBarIcon: ({ focused }) => (
         <TabBarIcon
             focused={focused}
-            name={
-                Platform.OS === 'ios' ? `ios-information-circle${focused ? '' : '-outline'}` : 'md-information-circle'
-            }
+            name={Platform.OS === 'ios' ? `ios-chatbubbles${focused ? '' : '-outline'}` : 'md-ios-chatbubbles'}
         />
     ),
 }
