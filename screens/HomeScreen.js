@@ -1,12 +1,14 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { WebBrowser } from 'expo'
+import uuid from 'uuid'
 
 import { MonoText } from '../components/StyledText'
 import MessageList from '../components/MessageList'
 import SendMessage from '../components/SendMessage'
 
 const buildMyMessage = msg => ({
+    id: uuid.v1(),
     msg,
     sender: 'me',
     timestamp: Date.now(),
@@ -21,7 +23,7 @@ export default class HomeScreen extends React.Component {
     }
     onSendMessagePress = v => {
         const messages = [...this.state.messages, buildMyMessage(v)]
-        this.setSate({ messages })
+        this.setState({ messages })
     }
 
     render() {

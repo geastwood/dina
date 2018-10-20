@@ -45,6 +45,10 @@ class SendMessage extends React.PureComponent {
     onChangeText = val => {
         this.setState({ val })
     }
+    onSubmit = val => {
+        this.props.onPress(val)
+        this.setState({ val: '' })
+    }
     render() {
         return (
             <View style={styles.container}>
@@ -60,7 +64,7 @@ class SendMessage extends React.PureComponent {
                     multiline
                     testID={'conversation_text_input'}
                 />
-                <TouchableOpacity onPress={() => this.props.onPress(this.state.val)} style={styles.icon}>
+                <TouchableOpacity onPress={() => this.onSubmit(this.state.val)} style={styles.icon}>
                     <Icon.Ionicons
                         name={Platform.OS === 'ios' ? 'ios-send' : 'md-ios-send'}
                         size={26}
