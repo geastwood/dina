@@ -19,7 +19,7 @@ import {
     appCodeName,
 } from '../config'
 
-const blacklist = ['ill', 'depressed']
+const blacklist = ['ill', 'depressed', 'stomach ache']
 const locationPhrase = 'How can I get there?'
 const startLocation = 'Munich train station'
 const endLocation = 'Hofmannstraße 25 Munich'
